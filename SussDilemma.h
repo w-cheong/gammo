@@ -7,23 +7,20 @@ void SussDilemma::face(Actor& opponent) {
     std::string move;
     const std::vector<std::string>& opponentMoves = opponent.getMoves();
 
+    // changed the entire if/else structure here
     if (getMoves().empty()) {
-        move = "cooperate"; // cooperate on the first move
+        move = "cooperate"; // Cooperate on the first move (like TFT)
     } else {
         if (!opponentMoves.empty()) {
             if (opponentMoves.back() == "defect") {
-                if (opponentMoves.back() == "defect") {
-                    move = "defect"; // Retaliate (like TFT)
-                } else { // Opponent cooperated
-                    // Explore with a small probability
-                    if (distrib(gen) < explorationProbability) {
-                        move = "defect"; // Explore by defecting
-                    } else {
-                        move = "cooperate"; // Otherwise, cooperate (like TFT)
-                    }
+                move = "defect"; // Retaliate (like TFT)
+            } else { // Opponent cooperated
+                // Explore with a small probability
+                if (distrib(gen) < explorationProbability) {
+                    move = "defect"; // Explore by defecting
+                } else {
+                    move = "cooperate"; // Otherwise, cooperate (like TFT)
                 }
-            } else {
-                move = "cooperate"; // Cooperate if the opponent cooperated
             }
         } else {
             move = "cooperate"; // Should not happen after the first move, but be safe
@@ -33,6 +30,7 @@ void SussDilemma::face(Actor& opponent) {
     recordMove(move);
 }
 
+//added reset function
 void sussDilemma::reset() {
     Actor::resetScore();
     moves_.clear();
