@@ -3,11 +3,13 @@
 #define SUSSDILEMMA_H
 
 #include "Actor.h"
+#include <string>
+#include <vector>
 #include <random>
 
 class SussDilemma : public Actor {
 public:
-    SussDilemma(const std::string& name, double forgivenessProbability = 0.1);
+    SussDilemma(const std::string& name, double forgivenessProbability = 0.05);
     void face(Actor& opponent) override;
     void reset() override;
 

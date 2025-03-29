@@ -8,15 +8,19 @@ void SussDilemma::face(Actor& opponent) {
     const std::vector<std::string>& opponentMoves = opponent.getMoves();
 
     if (getMoves().empty()) {
-        move = "defect"; // Defect on the first move
+        move = "cooperate"; // cooperate on the first move
     } else {
         if (!opponentMoves.empty()) {
             if (opponentMoves.back() == "defect") {
-                // Forgive with a certain probability
-                if (distrib_(gen_) < forgivenessProbability_) {
-                    move = "cooperate";
-                } else {
-                    move = "defect";
+                if (opponentMoves.back() == "defect") {
+                    move = "defect"; // Retaliate (like TFT)
+                } else { // Opponent cooperated
+                    // Explore with a small probability
+                    if (distrib(gen) < explorationProbability) {
+                        move = "defect"; // Explore by defecting
+                    } else {
+                        move = "cooperate"; // Otherwise, cooperate (like TFT)
+                    }
                 }
             } else {
                 move = "cooperate"; // Cooperate if the opponent cooperated
@@ -27,4 +31,9 @@ void SussDilemma::face(Actor& opponent) {
     }
 
     recordMove(move);
+}
+
+void sussDilemma::reset() {
+    Actor::resetScore();
+    moves_.clear();
 }
